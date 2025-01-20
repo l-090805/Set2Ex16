@@ -4,45 +4,66 @@ namespace Set2Ex16
 {
     internal class Program
     {
-        static bool EsteBitonicaRotita(int[] secventa)
-        {
-            int n = secventa.Length;
-            if (n < 3)
-            {
-                return false;
-            }
-
-            int schimbariDirectie = 0;
-            for(int i = 0; i < n; i++)
-            {
-                int urmatorulNumar = (i + 1) % n;
-                if (secventa[i]  < secventa[urmatorulNumar])
-                {
-                    if(i > 0 && secventa[i-1] > secventa[i])
-                    {
-                        schimbariDirectie++;
-                    }
-                }
-                else if (secventa[i] > secventa[urmatorulNumar])
-                {
-                    if( i > 0 && secventa[i-1] < secventa[i])
-                    {
-                        schimbariDirectie++;
-                    }
-                }
-            }
-
-            return schimbariDirectie >= 2;
-        }
         static void Main(string[] args)
         {
-            Console.WriteLine("Introduceti o serie de numere separate prin spatiu: ");
-            string input = Console.ReadLine();
-            int[] secventa = Array.ConvertAll(input.Split(' '), int.Parse);
+            Console.WriteLine("Numarul de elemente din secventa: ");
+            int n = int.Parse(Console.ReadLine());
 
-            bool rezultat = EsteBitonicaRotita(secventa);
+            if (n <= 2)
+            {
+                Console.WriteLine("Secventa este bitonica rotita."); 
+                return;
+            }
 
-            Console.WriteLine("Este bitonica rotita: " + rezultat);
+            Console.WriteLine("Introduceti elementele secventei: ");
+            int primulElement = int.Parse(Console.ReadLine());
+            int elementAnterior = primulElement;
+            int elementCurent;
+
+            int tranzitii = 0; 
+            bool crescator = true; 
+
+            for (int i = 1; i < n; i++)
+            {
+                elementCurent = int.Parse(Console.ReadLine());
+
+                if (crescator)
+                {
+                    if (elementCurent < elementAnterior)
+                    {
+                        tranzitii++;
+                        crescator = false;
+                    }
+                }
+                else
+                {
+                    if (elementCurent > elementAnterior)
+                    {
+                        tranzitii++;
+                        crescator = true;
+                    }
+                }
+
+                elementAnterior = elementCurent;
+            }
+
+            if (crescator && primulElement < elementAnterior)
+            {
+                tranzitii++;
+            }
+            else if (!crescator && primulElement > elementAnterior)
+            {
+                tranzitii++;
+            }
+
+            if (tranzitii <= 2)
+            {
+                Console.WriteLine("Secventa este bitonica rotita.");
+            }
+            else
+            {
+                Console.WriteLine("Secventa NU este bitonica rotita.");
+            }
         }
     }
 }
